@@ -10,28 +10,35 @@
     <div class="container">
         <h1>Jogo da Forca</h1>
         <div class="menu">
-            <button id="startGame" class="btn">Iniciar Jogo</button>
-            <button id="chooseBiome" class="btn">Escolher Bioma</button>
+            <button id="startGame" class="btn btn-primary">Iniciar Jogo</button>
+            <button id="chooseBiome" class="btn btn-secondary">Escolher Bioma</button>
         </div>
         <div id="game-setup" class="hidden">
             <h2>Configuração do Jogo</h2>
-            <label for="phrase">Frase:</label>
-            <input type="text" id="phrase" placeholder="Digite a frase">
-            <label for="hint">Dica:</label>
-            <input type="text" id="hint" placeholder="Digite a dica">
-            <button id="startPlay" class="btn">Começar</button>
+            <div class="input-group">
+                <label for="phrase">Frase:</label>
+                <input type="text" id="phrase" placeholder="Digite a frase">
+            </div>
+            <div class="input-group">
+                <label for="hint">Dica:</label>
+                <input type="text" id="hint" placeholder="Digite a dica">
+            </div>
+            <button id="startPlay" class="btn btn-primary">Começar</button>
         </div>
         <div id="game-board" class="hidden">
             <div class="biome" id="biome"></div>
-            <p id="phrase-display"></p>
-            <p id="hint-display"></p>
-            <p id="status"></p>
-            <div id="letters">
-                <p>Letra: <input type="text" id="letter-input" maxlength="1"></p>
-                <button id="guess-btn" class="btn">Adivinhar</button>
+            <div class="game-content">
+                <p id="phrase-display" class="display-text"></p>
+                <p id="hint-display" class="hint-text"></p>
+                <p id="status" class="status-text"></p>
+                <div id="letters" class="input-group">
+                    <label for="letter-input">Letra:</label>
+                    <input type="text" id="letter-input" maxlength="1" class="letter-input">
+                    <button id="guess-btn" class="btn btn-primary">Adivinhar</button>
+                </div>
+                <p id="errors" class="errors-text">Erros: 0</p>
+                <button id="restart-btn" class="btn btn-danger hidden">Reiniciar Jogo</button>
             </div>
-            <p id="errors">Erros: 0</p>
-            <button id="restart-btn" class="btn hidden">Reiniciar Jogo</button>
         </div>
     </div>
     <script src="script.js"></script>
