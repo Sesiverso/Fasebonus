@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorsDisplay = document.getElementById('errors');
     const restartButton = document.getElementById('restart-btn');
     const biomeDisplay = document.getElementById('biome');
+    const menuButtons = document.querySelectorAll('.menu .btn');
 
     let phrase, hint, currentPhrase, guessedLetters, errors, maxErrors, gameMode;
     
@@ -105,6 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (gameMode === '2') {
             gameMode = 'PvP';
         }
+        
+        // Hides setup buttons
+        menuButtons.forEach(button => button.classList.add('hidden'));
+
         initGame();
     });
 
