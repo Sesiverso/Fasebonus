@@ -42,44 +42,51 @@ h1 {
     transform: scale(0.95);
 }
 
-.board {
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 5px;
-    margin: 20px auto;
-    border: 3px solid #61dafb;
-    border-radius: 8px;
-    padding: 5px;
-    background: #20232a;
-}
-
-.cell {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    border: 2px solid #61dafb;
-    border-radius: 8px;
-    background: #282c34;
-    color: #ffffff;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.cell:hover {
-    background-color: #61dafb;
-    color: #282c34;
+.game-setup,
+.game-board {
+    margin-top: 20px;
 }
 
 .hidden {
     display: none;
 }
 
-#status {
+#game-board {
+    background-color: #20232a;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.biome {
+    height: 200px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+#phrase-display {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+#hint-display {
     font-size: 1.2em;
-    margin-top: 20px;
-    color: #61dafb;
+    margin: 10px 0;
+}
+
+#letters {
+    margin: 20px 0;
+}
+
+#errors {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+#restart-btn {
+    background-color: #ff6f61;
+}
+
+#restart-btn:hover {
+    background-color: #e55c50;
 }
