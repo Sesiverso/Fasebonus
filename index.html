@@ -1,75 +1,70 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da Forca</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Jogo da Forca</h1>
-        <div class="menu">
-            <button id="startGame" class="btn btn-primary">Iniciar Jogo</button>
-            <button id="chooseBiome" class="btn btn-secondary">Escolher Bioma</button>
-        </div>
-        <div id="biome-selection" class="hidden">
-            <h2>Escolha um Bioma</h2>
-            <div class="biome-options">
-                <div class="biome-option" data-biome="amazonia">
-                    <img src="images/amazonia.jpg" alt="Floresta Amazônica">
-                    <p>Floresta Amazônica</p>
-                </div>
-                <div class="biome-option" data-biome="mata-atlantica">
-                    <img src="images/mata-atlantica.jpg" alt="Mata Atlântica">
-                    <p>Mata Atlântica</p>
-                </div>
-                <div class="biome-option" data-biome="cerrado">
-                    <img src="images/cerrado.jpg" alt="Cerrado">
-                    <p>Cerrado</p>
-                </div>
-                <div class="biome-option" data-biome="caatinga">
-                    <img src="images/caatinga.jpg" alt="Caatinga">
-                    <p>Caatinga</p>
-                </div>
-                <div class="biome-option" data-biome="pampa">
-                    <img src="images/pampa.jpg" alt="Pampa">
-                    <p>Pampa</p>
-                </div>
-                <div class="biome-option" data-biome="pantanal">
-                    <img src="images/pantanal.jpg" alt="Pantanal">
-                    <p>Pantanal</p>
-                </div>
+    <h1>Jogo da Forca</h1>
+    <div id="setup" class="center">
+        <button id="start-game" class="btn btn-primary">Iniciar Jogo</button>
+        <button id="biome-selection" class="btn btn-secondary">Escolher Bioma</button>
+        <button id="play-mode" class="btn btn-primary hidden">Escolher Modo de Jogo</button>
+    </div>
+    <div id="biome-menu" class="hidden center">
+        <h2>Escolha um Bioma</h2>
+        <div class="biome-options">
+            <div class="biome-option" data-biome="amazonia">
+                <img src="images/amazonia.jpg" alt="Floresta Amazônica">
+                <p>Floresta Amazônica</p>
             </div>
-            <button id="biome-confirm" class="btn btn-primary">Confirmar</button>
-        </div>
-        <div id="game-setup" class="hidden">
-            <h2>Configuração do Jogo</h2>
-            <div class="input-group">
-                <label for="phrase">Frase:</label>
-                <input type="text" id="phrase" placeholder="Digite a frase">
+            <div class="biome-option" data-biome="mata-atlantica">
+                <img src="images/mata-atlantica.jpg" alt="Mata Atlântica">
+                <p>Mata Atlântica</p>
             </div>
-            <div class="input-group">
-                <label for="hint">Dica:</label>
-                <input type="text" id="hint" placeholder="Digite a dica">
+            <div class="biome-option" data-biome="cerrado">
+                <img src="images/cerrado.jpg" alt="Cerrado">
+                <p>Cerrado</p>
             </div>
-            <button id="startPlay" class="btn btn-primary">Começar</button>
-        </div>
-        <div id="game-board" class="hidden">
-            <div class="biome" id="biome"></div>
-            <div class="game-content">
-                <p id="phrase-display" class="display-text"></p>
-                <p id="hint-display" class="hint-text"></p>
-                <p id="status" class="status-text"></p>
-                <div id="letters" class="input-group">
-                    <label for="letter-input">Letra:</label>
-                    <input type="text" id="letter-input" maxlength="1" class="letter-input">
-                    <button id="guess-btn" class="btn btn-primary">Adivinhar</button>
-                </div>
-                <p id="errors" class="errors-text">Erros: 0</p>
-                <button id="restart-btn" class="btn btn-danger hidden">Reiniciar Jogo</button>
+            <div class="biome-option" data-biome="caatinga">
+                <img src="images/caatinga.jpg" alt="Caatinga">
+                <p>Caatinga</p>
+            </div>
+            <div class="biome-option" data-biome="pampa">
+                <img src="images/pampa.jpg" alt="Pampa">
+                <p>Pampa</p>
+            </div>
+            <div class="biome-option" data-biome="pantanal">
+                <img src="images/pantanal.jpg" alt="Pantanal">
+                <p>Pantanal</p>
             </div>
         </div>
+    </div>
+    <div id="mode-selection" class="hidden center">
+        <h2>Escolha o Modo de Jogo</h2>
+        <button id="single-player" class="btn btn-primary">Jogar Contra a IA</button>
+        <button id="two-players" class="btn btn-secondary">Jogar Contra Outro Jogador</button>
+    </div>
+    <div id="game-container" class="hidden center">
+        <div id="game-info">
+            <p id="word-display">_ _ _ _ _ _ _</p>
+            <p id="chances">Chances Restantes: 6</p>
+            <p id="hint">Dicas Restantes: 3</p>
+        </div>
+        <div id="actions">
+            <button id="hint-button">Mostrar Dica</button>
+            <input type="text" id="letter-input" maxlength="1" placeholder="Digite uma letra">
+            <button id="guess-button">Adivinhar</button>
+        </div>
+        <div id="hints">
+            <!-- Dicas serão exibidas aqui -->
+        </div>
+        <div id="status">
+            <p id="status-text"></p>
+        </div>
+        <button id="restart-btn" class="btn btn-danger hidden">Reiniciar Jogo</button>
     </div>
     <script src="script.js"></script>
 </body>
