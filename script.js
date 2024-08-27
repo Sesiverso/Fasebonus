@@ -1,85 +1,122 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const playAIButton = document.getElementById('playAI');
-    const playPvPButton = document.getElementById('playPvP');
+    const startGameButton = document.getElementById('startGame');
+    const chooseBiomeButton = document.getElementById('chooseBiome');
+    const gameSetup = document.getElementById('game-setup');
+    const startPlayButton = document.getElementById('startPlay');
     const gameBoard = document.getElementById('game-board');
+    const phraseDisplay = document.getElementById('phrase-display');
+    const hintDisplay = document.getElementById('hint-display');
     const status = document.getElementById('status');
-    const cells = document.querySelectorAll('.cell');
+    const letterInput = document.getElementById('letter-input');
+    const guessButton = document.getElementById('guess-btn');
+    const errorsDisplay = document.getElementById('errors');
+    const restartButton = document.getElementById('restart-btn');
+    const biomeDisplay = document.getElementById('biome');
 
-    let board, currentPlayer, gameMode;
+    let phrase, hint, currentPhrase, guessedLetters, errors, maxErrors, gameMode;
+    
+    const biomes = [
+        'url("images/forest.jpg")',
+        'url("images/desert.jpg")',
+        'url("images/ocean.jpg")'
+    ];
 
     const initGame = () => {
-        board = Array(9).fill(null);
-        currentPlayer = 'X';
-        status.textContent = `É a vez do jogador ${currentPlayer}`;
+        phrase = document.getElementById('phrase').value.toUpperCase();
+        hint = document.getElementById('hint').value;
+        currentPhrase = phrase.replace(/[^ ]/g, '_');
+        guessedLetters = [];
+        errors = 0;
+        maxErrors = 6;
+        
+        gameSetup.classList.add('hidden');
         gameBoard.classList.remove('hidden');
-        cells.forEach(cell => cell.textContent = '');
-        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-    };
-
-    const handleCellClick = (e) => {
-        const index = e.target.dataset.index;
-        if (board[index] || !gameBoard.classList.contains('hidden')) return;
-
-        board[index] = currentPlayer;
-        e.target.textContent = currentPlayer;
-
-        if (checkWinner()) {
-            status.textContent = `Jogador ${currentPlayer} venceu!`;
-            gameBoard.classList.add('hidden');
-            return;
-        }
-
-        if (board.every(cell => cell)) {
-            status.textContent = 'Empate!';
-            gameBoard.classList.add('hidden');
-            return;
-        }
-
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        status.textContent = `É a vez do jogador ${currentPlayer}`;
-
-        if (gameMode === 'AI' && currentPlayer === 'O') {
-            setTimeout(makeAIMove, 500);
+        
+        phraseDisplay.textContent = currentPhrase;
+        hintDisplay.textContent = `Dica: ${hint}`;
+        status.textContent = 'Adivinhe a frase!';
+        errorsDisplay.textContent = `Erros: ${errors}`;
+        
+        if (gameMode === 'AI') {
+            setTimeout(aiGuess, 1000);
         }
     };
 
-    const makeAIMove = () => {
-        const availableMoves = board.map((cell, index) => cell === null ? index : null).filter(index => index !== null);
-        const move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
-        board[move] = 'O';
-        cells[move].textContent = 'O';
+    const updateDisplay = () => {
+        let displayPhrase = '';
+        for (let char of phrase) {
+            if (guessedLetters.includes(char) || char === ' ') {
+                displayPhrase += char;
+            } else {
+                displayPhrase += '_';
+            }
+        }
+        phraseDisplay.textContent = displayPhrase;
+        
+        if (!displayPhrase.includes('_')) {
+            status.textContent = 'Você venceu!';
+            restartButton.classList.remove('hidden');
+        }
+    };
 
-        if (checkWinner()) {
-            status.textContent = 'Jogador O venceu!';
-            gameBoard.classList.add('hidden');
-        } else if (board.every(cell => cell)) {
-            status.textContent = 'Empate!';
-            gameBoard.classList.add('hidden');
+    const aiGuess = () => {
+        const availableLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(letter => !guessedLetters.includes(letter));
+        const randomLetter = availableLetters[Math.floor(Math.random() * availableLetters.length)];
+        handleGuess(randomLetter);
+    };
+
+    const handleGuess = (letter) => {
+        if (phrase.includes(letter)) {
+            guessedLetters.push(letter);
         } else {
-            currentPlayer = 'X';
-            status.textContent = `É a vez do jogador ${currentPlayer}`;
+            errors++;
+        }
+        
+        updateDisplay();
+        
+        if (errors >= maxErrors) {
+            status.textContent = 'Você perdeu!';
+            restartButton.classList.remove('hidden');
+        }
+        
+        errorsDisplay.textContent = `Erros: ${errors}`;
+        
+        if (gameMode === 'AI') {
+            setTimeout(aiGuess, 1000);
         }
     };
 
-    const checkWinner = () => {
-        const winningCombos = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontais
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Verticais
-            [0, 4, 8], [2, 4, 6] // Diagonais
-        ];
-        return winningCombos.some(combo => {
-            const [a, b, c] = combo;
-            return board[a] && board[a] === board[b] && board[a] === board[c];
-        });
-    };
+    startGameButton.addEventListener('click', () => {
+        gameSetup.classList.remove('hidden');
+        gameBoard.classList.add('hidden');
+    });
 
-    playAIButton.addEventListener('click', () => {
-        gameMode = 'AI';
+    chooseBiomeButton.addEventListener('click', () => {
+        const selectedBiome = prompt('Escolha um bioma:\n1. Floresta\n2. Deserto\n3. Oceano');
+        if (selectedBiome >= 1 && selectedBiome <= biomes.length) {
+            biomeDisplay.style.backgroundImage = biomes[selectedBiome - 1];
+        }
+    });
+
+    startPlayButton.addEventListener('click', () => {
+        gameMode = prompt('Escolha o modo de jogo:\n1. Jogar contra a IA\n2. Dois jogadores');
+        if (gameMode === '1') {
+            gameMode = 'AI';
+        } else if (gameMode === '2') {
+            gameMode = 'PvP';
+        }
         initGame();
     });
 
-    playPvPButton.addEventListener('click', () => {
-        gameMode = 'PvP';
-        initGame();
+    guessButton.addEventListener('click', () => {
+        const letter = letterInput.value.toUpperCase();
+        letterInput.value = '';
+        if (letter && letter.length === 1) {
+            handleGuess(letter);
+        }
+    });
+
+    restartButton.addEventListener('click', () => {
+        location.reload();
     });
 });
