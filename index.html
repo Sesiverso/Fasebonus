@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo da Velha</title>
+    <title>Jogo da Forca</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Jogo da Velha</h1>
+        <h1>Jogo da Forca</h1>
         <div class="menu">
-            <button id="playAI" class="btn">Jogar contra a IA</button>
-            <button id="playPvP" class="btn">Jogar contra outra pessoa</button>
+            <button id="startGame" class="btn">Iniciar Jogo</button>
+            <button id="chooseBiome" class="btn">Escolher Bioma</button>
+        </div>
+        <div id="game-setup" class="hidden">
+            <h2>Configuração do Jogo</h2>
+            <label for="phrase">Frase:</label>
+            <input type="text" id="phrase" placeholder="Digite a frase">
+            <label for="hint">Dica:</label>
+            <input type="text" id="hint" placeholder="Digite a dica">
+            <button id="startPlay" class="btn">Começar</button>
         </div>
         <div id="game-board" class="hidden">
-            <div class="board">
-                <div class="cell" data-index="0"></div>
-                <div class="cell" data-index="1"></div>
-                <div class="cell" data-index="2"></div>
-                <div class="cell" data-index="3"></div>
-                <div class="cell" data-index="4"></div>
-                <div class="cell" data-index="5"></div>
-                <div class="cell" data-index="6"></div>
-                <div class="cell" data-index="7"></div>
-                <div class="cell" data-index="8"></div>
-            </div>
+            <div class="biome" id="biome"></div>
+            <p id="phrase-display"></p>
+            <p id="hint-display"></p>
             <p id="status"></p>
+            <div id="letters">
+                <p>Letra: <input type="text" id="letter-input" maxlength="1"></p>
+                <button id="guess-btn" class="btn">Adivinhar</button>
+            </div>
+            <p id="errors">Erros: 0</p>
+            <button id="restart-btn" class="btn hidden">Reiniciar Jogo</button>
         </div>
     </div>
     <script src="script.js"></script>
