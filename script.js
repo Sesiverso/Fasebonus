@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const startGameButton = document.getElementById('startGame');
     const chooseBiomeButton = document.getElementById('chooseBiome');
+    const biomeSelection = document.getElementById('biome-selection');
+    const biomeConfirmButton = document.getElementById('biome-confirm');
     const gameSetup = document.getElementById('game-setup');
     const startPlayButton = document.getElementById('startPlay');
     const gameBoard = document.getElementById('game-board');
@@ -13,28 +15,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartButton = document.getElementById('restart-btn');
     const biomeDisplay = document.getElementById('biome');
     const menuButtons = document.querySelectorAll('.menu .btn');
+    const biomeOptions = document.querySelectorAll('.biome-option');
 
     let phrase, hint, currentPhrase, guessedLetters, errors, maxErrors, gameMode;
     
-    const biomes = [
-        'url("images/forest.jpg")',
-        'url("images/desert.jpg")',
-        'url("images/ocean.jpg")'
-    ];
+    const biomes = {
+        amazonia: 'url("images/amazonia.jpg")',
+        mata-atlantica: 'url("images/mata-atlantica.jpg")',
+        cerrado: 'url("images/cerrado.jpg")',
+        caatinga: 'url("images/caatinga.jpg")',
+        pampa: 'url("images/pampa.jpg")',
+        pantanal: 'url("images/pantanal.jpg")'
+    };
 
     const initGame = () => {
-        phrase = document.getElementById('phrase').value.toUpperCase();
-        hint = document.getElementById('hint').value;
-        currentPhrase = phrase.replace(/[^ ]/g, '_');
-        guessedLetters = [];
-        errors = 0;
-        maxErrors = 6;
+        if (gameMode === 'PvP') {
+            phrase = document.getElementById('phrase').value.toUpperCase();
+            hint = document.getElementById('hint').value;
+            currentPhrase = phrase.replace(/[^ ]/g, '_');
+            guessedLetters = [];
+            errors = 0;
+            maxErrors = 6;
+            
+            phraseDisplay.textContent = currentPhrase;
+            hintDisplay.textContent = `Dica: ${hint}`;
+        } else {
+            // For AI mode, phrase and hint are set in a different way
+            phrase = prompt('Digite a frase que a IA deve adivinhar:').toUpperCase();
+            hint = prompt('Digite a dica:');
+            currentPhrase = phrase.replace(/[^ ]/g, '_');
+            guessedLetters = [];
+            errors = 0;
+            maxErrors = 6;
+            
+            phraseDisplay.textContent = currentPhrase;
+            hintDisplay.textContent = `Dica: ${hint}`;
+        }
         
         gameSetup.classList.add('hidden');
         gameBoard.classList.remove('hidden');
         
-        phraseDisplay.textContent = currentPhrase;
-        hintDisplay.textContent = `Dica: ${hint}`;
         status.textContent = 'Adivinhe a frase!';
         errorsDisplay.textContent = `Erros: ${errors}`;
         
@@ -88,15 +108,34 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     startGameButton.addEventListener('click', () => {
-        gameSetup.classList.remove('hidden');
+        biomeSelection.classList.remove('hidden');
+        gameSetup.classList.add('hidden');
         gameBoard.classList.add('hidden');
     });
 
     chooseBiomeButton.addEventListener('click', () => {
-        const selectedBiome = prompt('Escolha um bioma:\n1. Floresta\n2. Deserto\n3. Oceano');
-        if (selectedBiome >= 1 && selectedBiome <= biomes.length) {
-            biomeDisplay.style.backgroundImage = biomes[selectedBiome - 1];
+        biomeSelection.classList.remove('hidden');
+        gameSetup.classList.add('hidden');
+        gameBoard.classList.add('hidden');
+    });
+
+    biomeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const selectedBiome = option.getAttribute('data-biome');
+            biomeDisplay.style.backgroundImage = biomes[selectedBiome];
+            biomeSelection.classList.add('hidden');
+            gameSetup.classList.remove('hidden');
+        });
+    });
+
+    biomeConfirmButton.addEventListener('click', () => {
+        const selectedBiome = document.querySelector('.biome-option.selected');
+        if (selectedBiome) {
+            const biomeId = selectedBiome.getAttribute('data-biome');
+            biomeDisplay.style.backgroundImage = biomes[biomeId];
         }
+        biomeSelection.classList.add('hidden');
+        gameSetup.classList.remove('hidden');
     });
 
     startPlayButton.addEventListener('click', () => {
